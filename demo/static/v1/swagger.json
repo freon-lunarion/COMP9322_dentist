@@ -1,0 +1,161 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Dentist Reservation API",
+    "description": "Book an appointment with a dentist.",
+    "version": "1.0.0"
+  },
+  "basePath": "/v1",
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "definitions": {
+    "Timeslot": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "auto-generate random string"
+        },
+        "date": {
+          "type": "string",
+          "description": "date yyyy-mm-dd"
+        },
+        "start": {
+          "type": "string",
+          "description": "starting time HH:MM (24hours)"
+        },
+        "end": {
+          "type": "string",
+          "description": "ending time HH:MM (24hours)"
+        }
+      }
+    }
+  },
+  "paths": {
+    "/timeslots": {
+      "get": {
+        "operationId": "get_timeslots",
+        "summary": "Gets the available timeslots",
+        "tags": [
+          "Appointments"
+        ],
+        "parameters": [
+          {
+            "name": "offset",
+            "in": "query",
+            "type": "integer",
+            "minimum": 0,
+            "default": 0
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100,
+            "default": 10
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Timeslot"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid status value"
+          }
+        }
+      },
+      "post": {
+        "operationId": "create_timeslots",
+        "summary": "Create Timeslots",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "The timeslot to create.",
+            "schema": {
+              "$ref": "#/definitions/Timeslot"
+            }
+          }
+        ],
+        "tags": [
+          "Appointments"
+        ],
+        "responses": {
+          "201": {
+            "description": "Timeslot created"
+          },
+          "400": {
+            "description": "Failed to create"
+          }
+        }
+      }
+    },
+    "/timeslots/{id}": {
+      "delete": {
+        "operationId": "remove_timeslots",
+        "summary": "Remove timeslot",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "tags": [
+          "Appointments"
+        ],
+        "responses": {
+          "200": {
+            "description": "Timeslot deleted"
+          },
+          "404": {
+            "description": "Timeslot not available"
+          }
+        }
+      }
+    },
+    "/timeslots/{id}/reserve": {
+      "post": {
+        "operationId": "reserve_timeslot",
+        "summary": "Books an appointment",
+        "tags": [
+          "Appointments"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "reservation created"
+          },
+          "401": {
+            "description": "unauthorise to create reservation"
+          },
+          "403": {
+            "description": "timeslot already reserved for other user"
+          },
+          "404": {
+            "description": "timeslot not exist"
+          }
+        }
+      }
+    }
+  }
+}
