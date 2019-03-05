@@ -12,7 +12,7 @@ class TimeslotsId(Resource):
 
     def delete(self, id):
         for timeslot in timeslots:
-            if timeslot['id'] == id:
+            if str(timeslot['id']) == id:
                 timeslots.remove(timeslot)
                 return None, 200, None
 

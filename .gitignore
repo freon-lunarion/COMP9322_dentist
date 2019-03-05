@@ -1,2 +1,4 @@
-/demo/v1/__pycache__
-/demo/v1/api/__pycache__
+/demo/v1/__pycache__/*
+/demo/v1/api/__pycache__/*
+/venv/*
+/.vscode/*
